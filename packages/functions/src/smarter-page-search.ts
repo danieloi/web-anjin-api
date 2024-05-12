@@ -12,14 +12,14 @@ async function getGroqChatCompletion(siteText: string, query: string) {
       {
         role: "system",
         content:
-          "You are my browser pilot that helps me find the best answer to my question.",
+          "You are my browser pilot that helps me find the best answer to questions I have about content on a website.",
       },
       {
         role: "user",
-        content: `Using ${siteText}, answer the following question: ${query}`,
+        content: `Using the following text from the website I'm looking at up to <END>: ${siteText} <END>, fulfill the following request: ${query}`,
       },
     ],
-    model: "llama3-8b-8192",
+    model: process.env.MODEL_NAME,
   });
 }
 
@@ -34,8 +34,9 @@ export const post = ApiHandler(async (_evt) => {
       }),
     };
   }
+
   const chatCompletion = await getGroqChatCompletion(siteText, query);
-  // Print the completion returned by the LLM.
+
   const output = chatCompletion.choices[0]?.message?.content || "";
 
   return {

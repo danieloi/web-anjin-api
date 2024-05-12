@@ -7,6 +7,7 @@ export function API({ stack }: StackContext) {
       function: {
         environment: {
           GROQ_API_KEY: process.env.GROQ_API_KEY || "",
+          MODEL_NAME: process.env.MODEL_NAME || "llama3-8b-8192",
         },
       },
     },
