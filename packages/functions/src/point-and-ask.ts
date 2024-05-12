@@ -25,7 +25,7 @@ async function getGroqChatCompletion(
       },
       {
         role: "user",
-        content: `Using the following text from the website I'm looking at up to <END>: ${siteText} <END>, answer the following question: ${query} about this highlighted text: ${highlightedText}`,
+        content: `Using the following text from the website I'm looking at: ${siteText} <END>, answer the following question: ${query} about this highlighted text: ${highlightedText}`,
       },
     ],
     model: process.env.MODEL_NAME,

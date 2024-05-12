@@ -1,5 +1,10 @@
 import { ApiHandler } from "sst/node/api";
 
+interface EventBody {
+  query: string;
+  siteText: string;
+}
+
 const Groq = require("groq-sdk");
 
 const groq = new Groq({
@@ -24,16 +29,14 @@ async function getGroqChatCompletion(siteText: string, query: string) {
 }
 
 export const post = ApiHandler(async (_evt) => {
-  const query = _evt.queryStringParameters?.query;
-  const siteText = _evt.queryStringParameters?.siteText;
-  if (!query || !siteText) {
+  if (!_evt.body) {
     return {
       statusCode: 400,
-      body: JSON.stringify({
-        error: "query and siteText parameters are required",
-      }),
+      body: JSON.stringify({ error: "Request body is missing" }),
     };
   }
+
+  const { query, siteText } = JSON.parse(_evt.body) as EventBody;
 
   const chatCompletion = await getGroqChatCompletion(siteText, query);
 
